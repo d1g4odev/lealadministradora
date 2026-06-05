@@ -170,10 +170,22 @@
                 </div>
 
                 <!-- Mobile menu button -->
-                <div class="md:hidden flex items-center">
-                    <button class="text-slate-600 hover:text-slate-900 focus:outline-none">
-                        <i class="fa-solid fa-bars text-2xl"></i>
+                <div class="md:hidden flex items-center" x-data="{ open: false }">
+                    <button @click="open = !open" class="text-slate-600 hover:text-slate-900 focus:outline-none">
+                        <i class="fa-solid text-2xl" :class="open ? 'fa-xmark' : 'fa-bars'"></i>
                     </button>
+
+                    <!-- Mobile dropdown -->
+                    <div x-show="open" @click.outside="open = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2"
+                         class="absolute top-full left-0 right-0 bg-white border-b border-slate-200 shadow-lg z-50 py-4 px-6 space-y-3">
+                        <a href="#solucao" @click="open = false" class="block text-slate-700 font-medium py-2 hover:text-brand-600 transition-colors">A Empresa</a>
+                        <a href="#diagnostico" @click="open = false" class="block text-slate-700 font-medium py-2 hover:text-brand-600 transition-colors">Diagnóstico</a>
+                        <a href="#servicos" @click="open = false" class="block text-slate-700 font-medium py-2 hover:text-brand-600 transition-colors">Serviços</a>
+                        <a href="#transparencia" @click="open = false" class="block text-slate-700 font-medium py-2 hover:text-brand-600 transition-colors">Transparência</a>
+                        <a href="https://wa.me/5555996850722" target="_blank" class="flex items-center gap-2 bg-brand-600 text-white px-5 py-3 rounded-xl font-semibold w-full justify-center mt-2">
+                            <i class="fa-brands fa-whatsapp text-lg"></i> Falar com a Jucieli
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -203,11 +215,11 @@
                     </p>
                     
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <button class="bg-brand-600 hover:bg-brand-700 text-white px-8 py-4 rounded-xl font-semibold transition-all shadow-lg shadow-brand-500/30 flex items-center justify-center gap-2 hover:-translate-y-1">
+                        <a href="https://wa.me/5555996850722" target="_blank" class="bg-brand-600 hover:bg-brand-700 text-white px-8 py-4 rounded-xl font-semibold transition-all shadow-lg shadow-brand-500/30 flex items-center justify-center gap-2 hover:-translate-y-1">
                             <i class="fa-brands fa-whatsapp text-xl"></i>
                             Solicitar proposta
-                        </button>
-                        <a href="#tour" class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-8 py-4 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 hover:-translate-y-1 shadow-sm">
+                        </a>
+                        <a href="#solucao" class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-8 py-4 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 hover:-translate-y-1 shadow-sm">
                             Conhecer a gestão
                         </a>
                     </div>
@@ -284,30 +296,30 @@
                     </h3>
                     
                     <!-- Chaotic visual composition -->
-                    <div class="relative h-64 w-full">
-                        <div class="absolute top-2 left-2 bg-white p-3 rounded-lg shadow-md border border-red-100 w-48 transform -rotate-3 z-10 opacity-90">
-                            <i class="fa-solid fa-file-invoice text-red-400 mb-1"></i>
+                    <div class="grid grid-cols-2 gap-2 w-full mt-2">
+                        <div class="bg-white p-3 rounded-lg shadow-md border border-red-100 transform -rotate-2">
+                            <i class="fa-solid fa-file-invoice text-red-400 mb-1 block"></i>
                             <div class="text-xs font-bold text-slate-700">Nota Fiscal Perdida</div>
                         </div>
-                        <div class="absolute top-16 right-4 bg-white p-3 rounded-lg shadow-md border border-orange-100 w-52 transform rotate-2 z-20">
-                            <div class="flex gap-2 items-center mb-1">
-                                <i class="fa-brands fa-whatsapp text-green-500"></i>
+                        <div class="bg-white p-3 rounded-lg shadow-md border border-orange-100 transform rotate-1">
+                            <div class="flex gap-1 items-center mb-1">
+                                <i class="fa-brands fa-whatsapp text-green-500 text-xs"></i>
                                 <span class="text-[10px] text-slate-500">Morador 301</span>
                             </div>
-                            <div class="text-xs text-slate-700">"Síndico, o elevador parou de novo!"</div>
+                            <div class="text-xs text-slate-700">"Elevador parou de novo!"</div>
                         </div>
-                        <div class="absolute bottom-10 left-10 bg-white p-3 rounded-lg shadow-md border border-slate-200 w-40 transform rotate-6 z-30">
-                            <i class="fa-solid fa-chart-line text-orange-400 mb-1"></i>
+                        <div class="bg-white p-3 rounded-lg shadow-md border border-slate-200 transform rotate-2">
+                            <i class="fa-solid fa-chart-line text-orange-400 mb-1 block"></i>
                             <div class="text-xs font-bold text-slate-700">Inadimplência</div>
-                            <div class="text-sm font-black text-red-500">Sem controle</div>
+                            <div class="text-xs font-black text-red-500">Sem controle</div>
                         </div>
-                        <div class="absolute bottom-2 right-12 bg-white p-3 rounded-lg shadow-md border border-slate-200 w-48 transform -rotate-2 z-10 opacity-80">
-                            <i class="fa-solid fa-users-slash text-slate-400 mb-1"></i>
+                        <div class="bg-white p-3 rounded-lg shadow-md border border-slate-200 transform -rotate-1">
+                            <i class="fa-solid fa-users-slash text-slate-400 mb-1 block"></i>
                             <div class="text-xs text-slate-700">Assembleia confusa e sem quórum</div>
                         </div>
-                        <div class="absolute top-28 left-1/3 bg-white p-3 rounded-lg shadow-md border border-orange-100 w-44 transform rotate-2 opacity-90" style="z-index:15">
-                            <i class="fa-solid fa-face-angry text-orange-400 mb-1"></i>
-                            <div class="text-xs text-slate-700">Condôminos discutindo</div>
+                        <div class="col-span-2 bg-white p-3 rounded-lg shadow-md border border-orange-100 transform rotate-1">
+                            <i class="fa-solid fa-face-angry text-orange-400 mb-1 block"></i>
+                            <div class="text-xs text-slate-700">Condôminos discutindo no corredor</div>
                         </div>
                     </div>
                     
@@ -361,7 +373,7 @@
         </div>
     </section>
 
-    <section class="py-24 bg-cream border-y border-stone-200 overflow-hidden" x-data="{ activeHotspot: 1 }">
+    <section class="py-24 bg-cream border-y border-stone-200 overflow-hidden" x-data="{ activeHotspot: 1, timer: null }" x-init="timer = setInterval(() => { activeHotspot = activeHotspot === 5 ? 1 : activeHotspot + 1 }, 7000)">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-16 reveal">
                 <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Raio-X gratuito da gestão do seu condomínio.</h2>
@@ -379,7 +391,7 @@
                         { id: 4, label: 'Inadimplência', icon: 'fa-chart-line-down' },
                         { id: 5, label: 'Assembleias', icon: 'fa-users' }
                     ]" :key="idx">
-                        <button @click="activeHotspot = item.id"
+                        <button @click="activeHotspot = item.id; clearInterval(timer); timer = setInterval(() => { activeHotspot = activeHotspot === 5 ? 1 : activeHotspot + 1 }, 7000)"
                                 class="flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-semibold transition-all"
                                 :class="activeHotspot === item.id ? 'bg-brand-600 text-white border-brand-600 shadow-md' : 'bg-white text-slate-600 border-slate-200 hover:border-brand-300'">
                             <i :class="`fa-solid ${item.icon} text-xs`"></i>
@@ -409,7 +421,7 @@
                         { id: 5, label: 'Assembleias', top: '85%', left: '25%', icon: 'fa-users' }
                     ]" :key="item.id">
                         <button
-                            @click="activeHotspot = item.id"
+                            @click="activeHotspot = item.id; clearInterval(timer); timer = setInterval(() => { activeHotspot = activeHotspot === 5 ? 1 : activeHotspot + 1 }, 7000)"
                             @mouseenter="activeHotspot = item.id"
                             class="absolute z-20 flex flex-col items-center gap-2 group focus:outline-none transition-all"
                             :style="`top: ${item.top}; left: ${item.left};`"
@@ -467,9 +479,9 @@
                             <p class="text-slate-600 mb-6">Apoiamos na elaboração de pautas claras, emissão de convocações legais, condução profissional das reuniões e redação ágil das atas, garantindo validade jurídica e engajamento.</p>
                         </div>
 
-                        <button class="bg-brand-600 hover:bg-brand-700 text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-md w-full sm:w-auto flex items-center justify-center gap-2">
+                        <a href="https://wa.me/5555996850722" target="_blank" class="bg-brand-600 hover:bg-brand-700 text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-md w-full sm:w-auto flex items-center justify-center gap-2">
                             Solicitar Raio-X do meu condomínio <i class="fa-solid fa-arrow-right"></i>
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -534,9 +546,9 @@
                             Parece que a gestão básica está fluindo, mas sempre há espaço para otimizar processos, reduzir custos com tecnologia e dar mais tranquilidade ao síndico.
                         </p>
 
-                        <button class="bg-brand-600 hover:bg-brand-700 text-white px-8 py-3.5 rounded-xl font-bold transition-all shadow-lg flex items-center gap-2 mx-auto">
+                        <a href="https://wa.me/5555996850722" target="_blank" class="bg-brand-600 hover:bg-brand-700 text-white px-8 py-3.5 rounded-xl font-bold transition-all shadow-lg flex items-center gap-2 mx-auto">
                             <i class="fa-brands fa-whatsapp text-lg"></i> Quero uma análise detalhada grátis
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -586,9 +598,9 @@
                         Nossa gestão ajuda o condomínio a acompanhar, organizar e reduzir esse impacto com processos de cobrança claros e eficientes.
                     </p>
                     
-                    <button class="w-full bg-brand-600 hover:bg-brand-700 text-white py-3 rounded-xl font-semibold transition-colors">
+                    <a href="https://wa.me/5555996850722" target="_blank" class="block w-full bg-brand-600 hover:bg-brand-700 text-white py-3 rounded-xl font-semibold transition-colors text-center">
                         Saber como reduzir isso
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -849,9 +861,9 @@
             </div>
 
             <div class="text-center mt-8 reveal">
-                <button class="bg-white border-2 border-brand-600 text-brand-600 hover:bg-brand-50 px-8 py-3 rounded-xl font-bold transition-all inline-block">
+                <a href="https://wa.me/5555996850722" target="_blank" class="bg-white border-2 border-brand-600 text-brand-600 hover:bg-brand-50 px-8 py-3 rounded-xl font-bold transition-all inline-block">
                     Quero entender como trocar
-                </button>
+                </a>
             </div>
         </div>
     </section>
@@ -1039,6 +1051,75 @@
                         </div>
                     </div>
                 </template>
+            </div>
+        </div>
+    </section>
+
+    <!-- Depoimentos -->
+    <section id="depoimentos" class="py-24 bg-cream border-t border-stone-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+                <span class="text-brand-600 font-semibold tracking-wide uppercase text-sm">Depoimentos</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mt-2">O que os síndicos de Santiago dizem</h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Depoimento 1 -->
+                <div class="bg-white rounded-2xl p-7 border border-slate-200 shadow-sm flex flex-col reveal">
+                    <div class="flex gap-1 mb-4">
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                    </div>
+                    <p class="text-slate-600 leading-relaxed flex-1 mb-6">"Antes eu passava horas respondendo moradores e resolvendo problemas sozinho. Com a Jucieli e a equipe da Leal, o condomínio funciona de forma muito mais tranquila e organizada."</p>
+                    <div class="flex items-center gap-3 pt-4 border-t border-slate-100">
+                        <div class="w-10 h-10 rounded-full bg-brand-100 flex items-center justify-center text-brand-600 font-bold text-sm shrink-0">CS</div>
+                        <div>
+                            <div class="text-sm font-semibold text-slate-800">Carlos S.</div>
+                            <div class="text-xs text-slate-400">Síndico · Residencial das Flores, Santiago RS</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Depoimento 2 -->
+                <div class="bg-white rounded-2xl p-7 border border-slate-200 shadow-sm flex flex-col reveal delay-100">
+                    <div class="flex gap-1 mb-4">
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                    </div>
+                    <p class="text-slate-600 leading-relaxed flex-1 mb-6">"A transparência nas contas é impressionante. Recebo o balancete todo mês, claro e organizado, com todos os comprovantes. O conselho aprova sem questionamentos. Recomendo muito."</p>
+                    <div class="flex items-center gap-3 pt-4 border-t border-slate-100">
+                        <div class="w-10 h-10 rounded-full bg-accent-100 flex items-center justify-center text-accent-600 font-bold text-sm shrink-0">MR</div>
+                        <div>
+                            <div class="text-sm font-semibold text-slate-800">Marcia R.</div>
+                            <div class="text-xs text-slate-400">Síndica · Edifício Central Park, Santiago RS</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Depoimento 3 -->
+                <div class="bg-white rounded-2xl p-7 border border-slate-200 shadow-sm flex flex-col reveal delay-200">
+                    <div class="flex gap-1 mb-4">
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                    </div>
+                    <p class="text-slate-600 leading-relaxed flex-1 mb-6">"Trocar de administradora parecia complicado, mas a Leal cuidou de tudo. Em menos de 30 dias já estávamos com a gestão funcionando perfeitamente. Atendimento local faz toda a diferença."</p>
+                    <div class="flex items-center gap-3 pt-4 border-t border-slate-100">
+                        <div class="w-10 h-10 rounded-full bg-brand-100 flex items-center justify-center text-brand-600 font-bold text-sm shrink-0">PA</div>
+                        <div>
+                            <div class="text-sm font-semibold text-slate-800">Paulo A.</div>
+                            <div class="text-xs text-slate-400">Síndico · Condomínio Villa Verde, Santiago RS</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
