@@ -486,41 +486,56 @@
         </div>
     </section>
 
-    <section id="diagnostico" class="py-24 bg-white" x-data="{ 
+    <section id="diagnostico" class="py-16 bg-white" x-data="{
         questions: [
-            { id: 1, text: 'A prestação de contas é enviada mensalmente e fácil de entender?', answer: null },
-            { id: 2, text: 'O síndico recebe suporte rápido quando tem dúvidas ou problemas?', answer: null },
-            { id: 3, text: 'Existe um controle ativo e transparente da inadimplência?', answer: null },
-            { id: 4, text: 'Os documentos e contratos estão organizados e acessíveis?', answer: null },
-            { id: 5, text: 'Os moradores têm um canal oficial e rápido para solicitações?', answer: null },
-            { id: 6, text: 'A atual administradora atende de forma rápida os chamados?', answer: null }
+            { text: 'Prestação de contas mensal e fácil de entender?', answer: null },
+            { text: 'Suporte rápido ao síndico em dúvidas e problemas?', answer: null },
+            { text: 'Controle ativo e transparente da inadimplência?', answer: null },
+            { text: 'Documentos organizados e acessíveis?', answer: null },
+            { text: 'Canal oficial para solicitações dos moradores?', answer: null },
+            { text: 'Atendimento ágil aos chamados da administradora?', answer: null }
         ],
-        get allAnswered() { return this.questions.every(q => q.answer !== null); },
+        get answered() { return this.questions.filter(q => q.answer !== null).length; },
+        get allAnswered() { return this.answered === this.questions.length; },
         get noCount() { return this.questions.filter(q => q.answer === false).length; }
     }">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
-            <div class="text-center mb-12">
-                <span class="text-brand-600 font-semibold tracking-wide uppercase text-sm">Diagnóstico Rápido</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mt-2">Seu condomínio está bem administrado?</h2>
+        <div class="max-w-2xl mx-auto px-4 sm:px-6 reveal">
+
+            <!-- Header compacto -->
+            <div class="text-center mb-8">
+                <span class="text-brand-600 font-semibold tracking-wide uppercase text-xs">Diagnóstico Rápido</span>
+                <h2 class="text-2xl font-bold text-slate-900 mt-1">Seu condomínio está bem administrado?</h2>
             </div>
 
-            <div class="bg-white rounded-2xl shadow-soft border border-slate-200 p-6 md:p-10">
-                <div class="space-y-6">
-                    <template x-for="(q, index) in questions" :key="q.id">
-                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 rounded-xl transition-colors"
-                             :class="q.answer !== null ? 'bg-slate-50' : 'bg-white border border-slate-100 hover:border-brand-200'">
-                            <span class="text-slate-700 font-medium text-lg flex-1">
-                                <span class="text-brand-400 mr-2" x-text="index + 1 + '.'"></span> <span x-text="q.text"></span>
-                            </span>
-                            <div class="flex gap-2 shrink-0">
-                                <button @click="q.answer = true" 
-                                        class="px-6 py-2 rounded-lg font-medium transition-all border"
-                                        :class="q.answer === true ? 'bg-brand-50 text-brand-600 border-brand-200 shadow-sm' : 'bg-white text-slate-500 border-slate-200 hover:bg-slate-50'">
+            <!-- Card único e compacto -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-soft overflow-hidden">
+
+                <!-- Barra de progresso -->
+                <div class="h-1 bg-slate-100">
+                    <div class="h-1 bg-brand-500 transition-all duration-500" :style="`width: ${answered / questions.length * 100}%`"></div>
+                </div>
+
+                <div class="p-5 space-y-2">
+                    <template x-for="(q, i) in questions" :key="i">
+                        <div class="flex items-center justify-between gap-3 py-2.5 px-3 rounded-xl transition-colors"
+                             :class="q.answer === true ? 'bg-green-50' : q.answer === false ? 'bg-red-50' : 'hover:bg-slate-50'">
+                            <!-- Ícone de status -->
+                            <div class="shrink-0 w-5 text-center">
+                                <i class="fa-solid text-sm"
+                                   :class="q.answer === true ? 'fa-check text-green-500' : q.answer === false ? 'fa-xmark text-red-400' : 'fa-circle text-slate-200'"></i>
+                            </div>
+                            <!-- Texto da pergunta -->
+                            <span class="flex-1 text-sm text-slate-700" x-text="q.text"></span>
+                            <!-- Botões Sim/Não compactos -->
+                            <div class="flex gap-1.5 shrink-0">
+                                <button @click="q.answer = true"
+                                        class="text-xs font-semibold px-3 py-1.5 rounded-lg border transition-all"
+                                        :class="q.answer === true ? 'bg-brand-600 text-white border-brand-600' : 'bg-white text-slate-500 border-slate-200 hover:border-brand-300 hover:text-brand-600'">
                                     Sim
                                 </button>
-                                <button @click="q.answer = false" 
-                                        class="px-6 py-2 rounded-lg font-medium transition-all border"
-                                        :class="q.answer === false ? 'bg-red-50 text-red-600 border-red-200 shadow-sm' : 'bg-white text-slate-500 border-slate-200 hover:bg-slate-50'">
+                                <button @click="q.answer = false"
+                                        class="text-xs font-semibold px-3 py-1.5 rounded-lg border transition-all"
+                                        :class="q.answer === false ? 'bg-red-500 text-white border-red-500' : 'bg-white text-slate-500 border-slate-200 hover:border-red-300 hover:text-red-500'">
                                     Não
                                 </button>
                             </div>
@@ -528,28 +543,33 @@
                     </template>
                 </div>
 
-                <!-- Result Area -->
-                <div x-show="allAnswered" x-collapse.duration.500ms class="mt-10 pt-8 border-t border-slate-200">
-                    <div class="bg-brand-50 rounded-xl p-8 text-center border border-brand-100">
-                        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-3xl mx-auto mb-4 shadow-sm text-brand-600">
-                            <i class="fa-solid fa-magnifying-glass-chart"></i>
+                <!-- Resultado inline -->
+                <div x-show="allAnswered" x-collapse.duration.400ms>
+                    <div class="mx-5 mb-5 rounded-xl p-4 flex flex-col sm:flex-row items-center gap-4"
+                         :class="noCount >= 2 ? 'bg-red-50 border border-red-100' : 'bg-brand-50 border border-brand-100'">
+                        <div class="shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-lg"
+                             :class="noCount >= 2 ? 'bg-red-100 text-red-600' : 'bg-brand-100 text-brand-600'">
+                            <i :class="noCount >= 2 ? 'fa-solid fa-triangle-exclamation' : 'fa-solid fa-circle-check'"></i>
                         </div>
-                        <h3 class="text-2xl font-bold text-slate-800 mb-2">Análise Concluída</h3>
-                        
-                        <p x-show="noCount >= 2" class="text-slate-600 mb-6">
-                            Você respondeu "Não" para <span x-text="noCount" class="font-bold"></span> perguntas importantes. 
-                            <strong class="text-slate-800">Seu condomínio tem gargalos claros na gestão.</strong> Isso pode estar gerando estresse, perda de dinheiro ou riscos legais.
-                        </p>
-                        <p x-show="noCount < 2" class="text-slate-600 mb-6">
-                            Parece que a gestão básica está fluindo, mas sempre há espaço para otimizar processos, reduzir custos com tecnologia e dar mais tranquilidade ao síndico.
-                        </p>
-
-                        <a href="https://wa.me/5555996850722" target="_blank" class="bg-brand-600 hover:bg-brand-700 text-white px-8 py-3.5 rounded-xl font-bold transition-all shadow-lg flex items-center gap-2 mx-auto">
-                            <i class="fa-brands fa-whatsapp text-lg"></i> Quero uma análise detalhada grátis
+                        <div class="flex-1 text-center sm:text-left">
+                            <p x-show="noCount >= 2" class="text-sm text-slate-700">
+                                <strong class="text-red-700" x-text="noCount + ' pontos críticos'"></strong> identificados — sua gestão tem gargalos que podem estar custando caro.
+                            </p>
+                            <p x-show="noCount < 2" class="text-sm text-slate-700">
+                                Boa base! Mas sempre há espaço para mais <strong class="text-brand-700">tranquilidade e eficiência</strong> na gestão.
+                            </p>
+                        </div>
+                        <a href="https://wa.me/5555996850722" target="_blank"
+                           class="shrink-0 flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all whitespace-nowrap">
+                            <i class="fa-brands fa-whatsapp"></i> Falar com a Jucieli
                         </a>
                     </div>
                 </div>
+
             </div>
+
+            <!-- Contador -->
+            <p class="text-center text-xs text-slate-400 mt-3" x-text="`${answered} de ${questions.length} respondidas`"></p>
         </div>
     </section>
 
