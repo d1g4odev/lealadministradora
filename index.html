@@ -863,30 +863,34 @@
                 </div>
             </div>
 
-            <!-- Desktop: animação empilhada (oculto abaixo de lg) -->
-            <div class="hidden lg:block relative h-96 reveal">
-                <div class="absolute inset-0 flex justify-center items-center">
-                    <div class="relative w-full max-w-sm">
-                        <div class="absolute w-full bg-white text-slate-800 p-4 rounded-xl shadow-2xl flex items-start gap-3 z-10 transform -rotate-6 translate-y-10 animate-float" style="animation-delay: 0s;">
-                            <i class="fa-brands fa-whatsapp text-green-500 text-2xl mt-1"></i>
-                            <div>
-                                <div class="font-bold text-sm">Morador 402</div>
-                                <div class="text-xs text-slate-500">Síndico, o vizinho tá com som alto de novo!</div>
-                            </div>
+            <!-- Desktop: notificações espalhadas (oculto abaixo de lg) -->
+            <div class="hidden lg:flex relative h-96 items-center justify-center reveal">
+                <div class="relative w-full max-w-sm">
+                    <!-- Card 1: topo -->
+                    <div class="absolute w-full bg-white text-slate-800 p-4 rounded-xl shadow-2xl flex items-start gap-3 z-10 animate-float"
+                         style="top:-96px; transform: rotate(-3deg) translateX(-12px); animation-delay: 0s;">
+                        <i class="fa-brands fa-whatsapp text-green-500 text-2xl mt-1 shrink-0"></i>
+                        <div>
+                            <div class="font-bold text-sm">Morador 402</div>
+                            <div class="text-xs text-slate-500">Síndico, o vizinho tá com som alto de novo!</div>
                         </div>
-                        <div class="absolute w-full bg-white text-slate-800 p-4 rounded-xl shadow-2xl flex items-start gap-3 z-20 transform rotate-3 translate-y-4 animate-float" style="animation-delay: 0.5s;">
-                            <i class="fa-solid fa-envelope text-accent-600 text-2xl mt-1"></i>
-                            <div>
-                                <div class="font-bold text-sm">Contabilidade</div>
-                                <div class="text-xs text-slate-500">Faltam 3 notas fiscais para fechar o mês.</div>
-                            </div>
+                    </div>
+                    <!-- Card 2: meio -->
+                    <div class="absolute w-full bg-white text-slate-800 p-4 rounded-xl shadow-2xl flex items-start gap-3 z-20 animate-float"
+                         style="top:-28px; transform: rotate(2deg) translateX(10px); animation-delay: 0.6s;">
+                        <i class="fa-solid fa-envelope text-accent-600 text-2xl mt-1 shrink-0"></i>
+                        <div>
+                            <div class="font-bold text-sm">Contabilidade</div>
+                            <div class="text-xs text-slate-500">Faltam 3 notas fiscais para fechar o mês.</div>
                         </div>
-                        <div class="absolute w-full bg-red-50 text-slate-800 p-4 rounded-xl shadow-2xl border border-red-200 flex items-start gap-3 z-30 transform -rotate-2 -translate-y-4 animate-float" style="animation-delay: 1s;">
-                            <i class="fa-solid fa-triangle-exclamation text-red-500 text-2xl mt-1"></i>
-                            <div>
-                                <div class="font-bold text-sm text-red-700">Alerta: Elevador</div>
-                                <div class="text-xs text-red-600">Manutenção preventiva vencida.</div>
-                            </div>
+                    </div>
+                    <!-- Card 3: base -->
+                    <div class="absolute w-full bg-red-50 text-slate-800 p-4 rounded-xl shadow-2xl border border-red-200 flex items-start gap-3 z-30 animate-float"
+                         style="top:40px; transform: rotate(-1deg) translateX(-6px); animation-delay: 1.2s;">
+                        <i class="fa-solid fa-triangle-exclamation text-red-500 text-2xl mt-1 shrink-0"></i>
+                        <div>
+                            <div class="font-bold text-sm text-red-700">Alerta: Elevador</div>
+                            <div class="text-xs text-red-600">Manutenção preventiva vencida.</div>
                         </div>
                     </div>
                 </div>
