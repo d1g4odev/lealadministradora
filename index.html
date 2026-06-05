@@ -6,7 +6,7 @@
     <title>Leal Administradora | Gestão de Condomínios em Santiago RS</title>
 
     <!-- SEO -->
-    <meta name="description" content="A Leal Administradora cuida de toda a rotina do seu condomínio em Santiago RS e região — financeiro, documentação, assembleias e atendimento. Gestão profissional e transparente com a Jucieli Leal.">
+    <meta name="description" content="A Leal Administradora cuida de toda a rotina do seu condomínio em Santiago RS e região — financeiro, documentação, manutenções, assembleias e atendimento. Gestão profissional e transparente com a Jucieli Leal.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://leal-administradora.vercel.app/">
 
@@ -163,7 +163,7 @@
 
                 <!-- CTA -->
                 <div class="hidden md:flex items-center">
-                    <a href="#" class="bg-brand-600 hover:bg-brand-700 text-white px-6 py-2.5 rounded-full font-medium transition-all shadow-lg shadow-brand-500/30 flex items-center gap-2 transform hover:-translate-y-0.5">
+                    <a href="https://wa.me/5555996850722" target="_blank" class="bg-brand-600 hover:bg-brand-700 text-white px-6 py-2.5 rounded-full font-medium transition-all shadow-lg shadow-brand-500/30 flex items-center gap-2 transform hover:-translate-y-0.5">
                         <i class="fa-brands fa-whatsapp text-lg"></i>
                         Falar com a Jucieli
                     </a>
@@ -199,7 +199,7 @@
                         Gestão condominial <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-accent-600">clara, organizada</span> e sem complicação.
                     </h1>
                     <p class="text-lg text-slate-600 mb-8 max-w-xl leading-relaxed">
-                        A <strong>Leal Administradora</strong>, sediada em <strong>Santiago&nbsp;RS</strong>, cuida de toda a rotina do seu condomínio — financeiro, documentação, assembleias e atendimento — para que o síndico de Santiago e região foque no que realmente importa.
+                        A <strong>Leal Administradora</strong>, sediada em <strong>Santiago&nbsp;RS</strong>, cuida de toda a rotina do seu condomínio — financeiro, documentação, manutenções, assembleias e atendimento — para que o síndico de Santiago e região foque no que realmente importa.
                     </p>
                     
                     <div class="flex flex-col sm:flex-row gap-4">
@@ -232,7 +232,7 @@
 
                         <!-- Badge de números — canto inferior direito -->
                         <div class="absolute -bottom-5 -right-5 z-20 bg-brand-600 text-white p-5 rounded-2xl shadow-xl text-center">
-                            <div class="text-3xl font-black leading-none">50+</div>
+                            <div class="text-3xl font-black leading-none">10+</div>
                             <div class="text-xs text-brand-200 mt-1 font-medium leading-tight">condomínios<br>administrados</div>
                         </div>
                     </div>
@@ -304,6 +304,10 @@
                         <div class="absolute bottom-2 right-12 bg-white p-3 rounded-lg shadow-md border border-slate-200 w-48 transform -rotate-2 z-10 opacity-80">
                             <i class="fa-solid fa-users-slash text-slate-400 mb-1"></i>
                             <div class="text-xs text-slate-700">Assembleia confusa e sem quórum</div>
+                        </div>
+                        <div class="absolute top-28 left-1/3 bg-white p-3 rounded-lg shadow-md border border-orange-100 w-44 transform rotate-2 opacity-90" style="z-index:15">
+                            <i class="fa-solid fa-face-angry text-orange-400 mb-1"></i>
+                            <div class="text-xs text-slate-700">Condôminos discutindo</div>
                         </div>
                     </div>
                     
@@ -478,7 +482,8 @@
             { id: 2, text: 'O síndico recebe suporte rápido quando tem dúvidas ou problemas?', answer: null },
             { id: 3, text: 'Existe um controle ativo e transparente da inadimplência?', answer: null },
             { id: 4, text: 'Os documentos e contratos estão organizados e acessíveis?', answer: null },
-            { id: 5, text: 'Os moradores têm um canal oficial e rápido para solicitações?', answer: null }
+            { id: 5, text: 'Os moradores têm um canal oficial e rápido para solicitações?', answer: null },
+            { id: 6, text: 'A atual administradora atende de forma rápida os chamados?', answer: null }
         ],
         get allAnswered() { return this.questions.every(q => q.answer !== null); },
         get noCount() { return this.questions.filter(q => q.answer === false).length; }
@@ -622,7 +627,8 @@
                         { id: 'financeiro', icon: 'fa-chart-pie', label: 'Financeiro' },
                         { id: 'documentos', icon: 'fa-folder-tree', label: 'Documentos' },
                         { id: 'atendimento', icon: 'fa-headset', label: 'Atendimento' },
-                        { id: 'assembleias', icon: 'fa-users', label: 'Assembleias' }
+                        { id: 'assembleias', icon: 'fa-users', label: 'Assembleias' },
+                        { id: 'juridico', icon: 'fa-scale-balanced', label: 'Jurídico' }
                     ]">
                         <button @click="activeTab = tab.id"
                                 class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left font-medium transition-all"
@@ -758,6 +764,21 @@
                                     <div class="text-xs text-slate-500 mt-0.5">Documento com validade jurídica entregue em até 10 dias úteis</div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab: Jurídico -->
+                    <div x-show="activeTab === 'juridico'" class="w-full" style="display: none;" x-transition.opacity>
+                        <h3 class="text-2xl font-bold text-slate-800 mb-2">Suporte Jurídico</h3>
+                        <p class="text-slate-600 mb-6">Segurança jurídica para a administradora e para os condomínios, evitando problemas, reduzindo riscos e trazendo mais credibilidade e profissionalismo na gestão condominial.</p>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl"><i class="fa-solid fa-check text-brand-600 shrink-0"></i><span class="text-sm text-slate-700">Cobrança de inadimplentes</span></div>
+                            <div class="flex items-center gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl"><i class="fa-solid fa-check text-brand-600 shrink-0"></i><span class="text-sm text-slate-700">Elaboração e revisão de contratos</span></div>
+                            <div class="flex items-center gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl"><i class="fa-solid fa-check text-brand-600 shrink-0"></i><span class="text-sm text-slate-700">Orientação jurídica para síndicos e assembleias</span></div>
+                            <div class="flex items-center gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl"><i class="fa-solid fa-check text-brand-600 shrink-0"></i><span class="text-sm text-slate-700">Aplicação de multas e análise de convenções</span></div>
+                            <div class="flex items-center gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl"><i class="fa-solid fa-check text-brand-600 shrink-0"></i><span class="text-sm text-slate-700">Defesa do condomínio em processos judiciais</span></div>
+                            <div class="flex items-center gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl"><i class="fa-solid fa-check text-brand-600 shrink-0"></i><span class="text-sm text-slate-700">Prevenção de ações trabalhistas</span></div>
+                            <div class="flex items-center gap-3 p-3 bg-brand-50 border border-brand-100 rounded-xl"><i class="fa-solid fa-check text-brand-600 shrink-0"></i><span class="text-sm text-slate-700">Mediação de conflitos entre moradores</span></div>
                         </div>
                     </div>
 
@@ -903,7 +924,7 @@
                 <p class="text-xl text-slate-300 mb-8 font-light">
                     A administração condominial não deve ser um segundo emprego exaustivo. A Leal Administradora, sediada aqui em Santiago RS, assume a burocracia, organiza a rotina e filtra os problemas para que você foque apenas nas decisões que importam.
                 </p>
-                <a href="#" class="inline-flex items-center gap-3 bg-brand-600 hover:bg-brand-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-lg shadow-brand-500/30">
+                <a href="https://wa.me/5555996850722" target="_blank" class="inline-flex items-center gap-3 bg-brand-600 hover:bg-brand-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-lg shadow-brand-500/30">
                     <i class="fa-brands fa-whatsapp text-xl"></i>
                     Quero mais tranquilidade na gestão
                 </a>
@@ -931,9 +952,9 @@
                 <div class="reveal">
                     <span class="text-brand-600 font-semibold tracking-wide uppercase text-sm">Quem está por trás</span>
                     <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mt-2 mb-2">Jucieli Leal</h2>
-                    <p class="text-slate-500 font-medium mb-6">Fundadora &amp; Responsável Técnica — Leal Administradora</p>
+                    <p class="text-slate-500 font-medium mb-6">Fundadora e Administradora — Leal Administradora</p>
                     <p class="text-slate-600 mb-4 leading-relaxed">
-                        Natural de <strong class="text-slate-800">Santiago, RS</strong>, Jucieli Leal criou a <strong class="text-slate-800">Leal Administradora</strong> com uma missão clara: devolver a tranquilidade aos síndicos da cidade e da região, trazendo organização onde existe caos — com o cuidado de quem conhece a comunidade de perto.
+                        A <strong class="text-slate-800">Leal Administradora</strong> de condomínios foi criada com uma missão clara: devolver a tranquilidade aos síndicos da cidade e da região, trazendo organização onde existe caos — com o cuidado de quem conhece a comunidade de perto.
                     </p>
                     <p class="text-slate-600 mb-8 leading-relaxed">
                         Sua gestão é marcada pelo atendimento próximo, pela transparência total nas contas e pelo compromisso de fazer cada condomínio de Santiago e região funcionar como deveria — sem estresse, sem surpresas.
@@ -942,7 +963,7 @@
                     <!-- Números -->
                     <div class="grid grid-cols-2 gap-4 mb-8">
                         <div class="bg-cream p-5 rounded-2xl border border-stone-200">
-                            <div class="text-3xl font-black text-brand-600">50+</div>
+                            <div class="text-3xl font-black text-brand-600">10+</div>
                             <div class="text-sm text-slate-600 mt-1">Condomínios administrados</div>
                         </div>
                         <div class="bg-cream p-5 rounded-2xl border border-stone-200">
@@ -951,7 +972,7 @@
                         </div>
                     </div>
 
-                    <a href="#" class="inline-flex items-center gap-3 bg-brand-600 hover:bg-brand-700 text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-lg shadow-brand-500/30">
+                    <a href="https://wa.me/5555996850722" target="_blank" class="inline-flex items-center gap-3 bg-brand-600 hover:bg-brand-700 text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-lg shadow-brand-500/30">
                         <i class="fa-brands fa-whatsapp text-xl"></i>
                         Conversar com a Jucieli
                     </a>
@@ -1030,7 +1051,7 @@
         <div class="max-w-4xl mx-auto px-4 text-center relative z-10 reveal">
             <h2 class="text-4xl font-bold mb-6">Seu condomínio em Santiago merece uma gestão de verdade.</h2>
             <p class="text-xl text-brand-100 mb-10">Fale com a Jucieli e receba uma proposta personalizada para a realidade do seu condomínio em Santiago e região.</p>
-            <a href="#" class="inline-flex items-center gap-3 bg-white text-brand-700 hover:bg-cream px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-xl hover:-translate-y-1">
+            <a href="https://wa.me/5555996850722" target="_blank" class="inline-flex items-center gap-3 bg-white text-brand-700 hover:bg-cream px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-xl hover:-translate-y-1">
                 <i class="fa-brands fa-whatsapp text-2xl text-green-500"></i>
                 Falar com a Jucieli pelo WhatsApp
             </a>
@@ -1060,12 +1081,11 @@
                 <div>
                     <h4 class="text-white font-semibold mb-4">Contato</h4>
                     <ul class="space-y-2 text-sm">
-                        <li class="flex items-center gap-2"><i class="fa-brands fa-whatsapp text-brand-500"></i> (00) 90000-0000</li>
-                        <li class="flex items-center gap-2"><i class="fa-regular fa-envelope text-brand-500"></i> contato@lealadministradora.com.br</li>
+                        <li class="flex items-center gap-2"><i class="fa-brands fa-whatsapp text-brand-500"></i> (55) 99685-0722</li>
+                        <li class="flex items-center gap-2"><i class="fa-regular fa-envelope text-brand-500"></i> lealcondominiosstgo@gmail.com</li>
                     </ul>
                     <div class="flex gap-4 mt-4">
-                        <a href="#" class="text-slate-400 hover:text-white transition-colors"><i class="fa-brands fa-instagram text-xl"></i></a>
-                        <a href="#" class="text-slate-400 hover:text-white transition-colors"><i class="fa-brands fa-linkedin text-xl"></i></a>
+                        <a href="https://www.instagram.com/leal_adm_condominios/" target="_blank" class="text-slate-400 hover:text-white transition-colors"><i class="fa-brands fa-instagram text-xl"></i></a>
                     </div>
                 </div>
             </div>
