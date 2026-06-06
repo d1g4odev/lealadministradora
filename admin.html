@@ -34,7 +34,7 @@
 <body class="font-sans bg-slate-100 text-slate-700 antialiased"
       x-data="{
         section: 'dashboard',
-        sidebar: true,
+        sidebar: window.innerWidth >= 768,
         condoAtivo: 0,
         pastaAtiva: null,
         condos: [
@@ -44,12 +44,12 @@
             { nome: 'Sol Nascente',            sindico: 'Ana Lima',         unidades: 24, inadimplentes: 0,  saldo: 3430,  status: 'ok'    }
         ],
         pastas: [
-            { nome: 'Atas 2026',          icon: 'fa-file-contract', qtd: 4,  cor: 'text-brand-600' },
-            { nome: 'Contratos',          icon: 'fa-handshake',     qtd: 11, cor: 'text-accent-600' },
-            { nome: 'Notas Fiscais',      icon: 'fa-receipt',       qtd: 38, cor: 'text-amber-500'  },
-            { nome: 'Prestações de Conta',icon: 'fa-chart-pie',     qtd: 6,  cor: 'text-green-600'  },
-            { nome: 'Seguros e AVCB',     icon: 'fa-shield-halved', qtd: 3,  cor: 'text-blue-500'   },
-            { nome: 'Trabalhista',        icon: 'fa-users',         qtd: 7,  cor: 'text-purple-500'  }
+            { nome: 'Atas 2026',           icon: 'fa-file-contract', qtd: 4,  cor: 'text-brand-600'  },
+            { nome: 'Contratos',           icon: 'fa-handshake',     qtd: 11, cor: 'text-indigo-600' },
+            { nome: 'Notas Fiscais',       icon: 'fa-receipt',       qtd: 38, cor: 'text-amber-500'  },
+            { nome: 'Prestações de Conta', icon: 'fa-chart-pie',     qtd: 6,  cor: 'text-green-600'  },
+            { nome: 'Seguros e AVCB',      icon: 'fa-shield-halved', qtd: 3,  cor: 'text-blue-500'   },
+            { nome: 'Trabalhista',         icon: 'fa-users',         qtd: 7,  cor: 'text-purple-500'  }
         ],
         get totalUnidades()      { return this.condos.reduce((s,c) => s + c.unidades, 0) },
         get totalInadimplentes() { return this.condos.reduce((s,c) => s + c.inadimplentes, 0) },
@@ -59,8 +59,9 @@
       x-cloak>
 
 <!-- ====== SIDEBAR ====== -->
-<aside class="fixed top-0 left-0 h-full z-30 flex flex-col transition-all duration-300"
-       :class="sidebar ? 'w-60' : 'w-16'" style="background:#030b18;">
+<aside class="fixed top-0 left-0 h-full z-40 flex flex-col transition-all duration-300"
+       :class="sidebar ? 'w-60 translate-x-0' : 'w-16 -translate-x-full md:translate-x-0'"
+       style="background:#030b18;">
 
     <!-- Logo -->
     <div class="flex items-center gap-3 px-4 py-5 border-b border-white/5 shrink-0">
@@ -71,15 +72,15 @@
     <!-- Nav -->
     <nav class="flex-1 overflow-y-auto py-4 space-y-0.5 px-2">
         <template x-for="item in [
-            { id:'dashboard',      icon:'fa-gauge-high',      label:'Dashboard'      },
-            { id:'condominios',    icon:'fa-building',        label:'Condomínios'    },
-            { id:'documentos',     icon:'fa-folder-open',     label:'Documentos'     },
-            { id:'financeiro',     icon:'fa-chart-pie',       label:'Financeiro'     },
-            { id:'inadimplencia',  icon:'fa-triangle-exclamation', label:'Inadimplência' },
-            { id:'assembleias',    icon:'fa-users',           label:'Assembleias'    },
-            { id:'comunicados',    icon:'fa-bullhorn',        label:'Comunicados'    }
+            { id:'dashboard',      icon:'fa-gauge-high',           label:'Dashboard'      },
+            { id:'condominios',    icon:'fa-building',             label:'Condomínios'    },
+            { id:'documentos',     icon:'fa-folder-open',          label:'Documentos'     },
+            { id:'financeiro',     icon:'fa-chart-pie',            label:'Financeiro'     },
+            { id:'inadimplencia',  icon:'fa-triangle-exclamation', label:'Inadimplência'  },
+            { id:'assembleias',    icon:'fa-users',                label:'Assembleias'    },
+            { id:'comunicados',    icon:'fa-bullhorn',             label:'Comunicados'    }
         ]">
-            <button @click="section = item.id"
+            <button @click="section = item.id; if(window.innerWidth < 768) sidebar = false"
                     class="sidebar-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-sm font-medium"
                     :class="section === item.id
                         ? 'bg-brand-600 text-white'
@@ -99,16 +100,35 @@
     </div>
 </aside>
 
+<!-- Mobile sidebar backdrop -->
+<div x-show="sidebar && window.innerWidth < 768"
+     @click="sidebar = false"
+     class="fixed inset-0 bg-black/50 z-30 md:hidden"
+     x-transition:enter="transition ease-out duration-200"
+     x-transition:enter-start="opacity-0"
+     x-transition:enter-end="opacity-100"
+     x-transition:leave="transition ease-in duration-150"
+     x-transition:leave-start="opacity-100"
+     x-transition:leave-end="opacity-0">
+</div>
+
 <!-- ====== MAIN ====== -->
-<div class="transition-all duration-300 min-h-screen flex flex-col" :class="sidebar ? 'ml-60' : 'ml-16'">
+<div class="transition-all duration-300 min-h-screen flex flex-col" :class="sidebar ? 'md:ml-60' : 'md:ml-16'">
 
     <!-- Top bar -->
-    <header class="sticky top-0 z-20 bg-white border-b border-slate-200 flex items-center justify-between px-6 h-14 shadow-sm">
-        <div class="flex items-center gap-4">
+    <header class="sticky top-0 z-20 bg-white border-b border-slate-200 flex items-center justify-between px-4 sm:px-6 h-14 shadow-sm">
+        <div class="flex items-center gap-3 sm:gap-4">
             <button @click="sidebar = !sidebar" class="text-slate-400 hover:text-slate-700 transition-colors">
                 <i class="fa-solid fa-bars text-lg"></i>
             </button>
-            <span class="text-sm font-semibold text-slate-700 capitalize" x-text="section.replace('inadimplencia','Inadimplência').replace('condominios','Condomínios').replace('assembleias','Assembleias').replace('comunicados','Comunicados').replace('documentos','Documentos').replace('financeiro','Financeiro').replace('dashboard','Dashboard')"></span>
+            <span class="text-sm font-semibold text-slate-700 capitalize" x-text="section
+                .replace('inadimplencia','Inadimplência')
+                .replace('condominios','Condomínios')
+                .replace('assembleias','Assembleias')
+                .replace('comunicados','Comunicados')
+                .replace('documentos','Documentos')
+                .replace('financeiro','Financeiro')
+                .replace('dashboard','Dashboard')"></span>
         </div>
         <div class="flex items-center gap-3">
             <div class="relative">
@@ -116,67 +136,67 @@
                 <span class="absolute -top-1 -right-1 w-4 h-4 bg-brand-600 text-white text-[9px] font-bold rounded-full flex items-center justify-center">3</span>
             </div>
             <div class="flex items-center gap-2 pl-3 border-l border-slate-200">
-                <div class="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center text-brand-600 font-bold text-sm">JL</div>
+                <div class="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center text-brand-600 font-bold text-sm shrink-0">JL</div>
                 <span class="text-sm font-medium text-slate-700 hidden sm:block">Jucieli Leal</span>
             </div>
         </div>
     </header>
 
     <!-- Content -->
-    <main class="flex-1 p-6">
+    <main class="flex-1 p-4 md:p-6">
 
         <!-- ===== DASHBOARD ===== -->
-        <div x-show="section === 'dashboard'" class="space-y-6">
+        <div x-show="section === 'dashboard'" class="space-y-5 md:space-y-6">
 
             <!-- Stat cards -->
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm border-t-4 border-t-brand-600">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+                <div class="bg-white rounded-2xl p-4 md:p-5 border border-slate-200 shadow-sm border-t-4 border-t-brand-600">
                     <div class="text-xs text-slate-500 font-medium mb-1">Condomínios</div>
-                    <div class="text-3xl font-black text-slate-800">4</div>
+                    <div class="text-2xl md:text-3xl font-black text-slate-800">4</div>
                     <div class="text-xs text-slate-400 mt-1">ativos</div>
                 </div>
-                <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm border-t-4 border-t-blue-500">
+                <div class="bg-white rounded-2xl p-4 md:p-5 border border-slate-200 shadow-sm border-t-4 border-t-blue-500">
                     <div class="text-xs text-slate-500 font-medium mb-1">Unidades</div>
-                    <div class="text-3xl font-black text-slate-800" x-text="totalUnidades"></div>
+                    <div class="text-2xl md:text-3xl font-black text-slate-800" x-text="totalUnidades"></div>
                     <div class="text-xs text-slate-400 mt-1">no total</div>
                 </div>
-                <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm border-t-4 border-t-amber-500">
+                <div class="bg-white rounded-2xl p-4 md:p-5 border border-slate-200 shadow-sm border-t-4 border-t-amber-500">
                     <div class="text-xs text-slate-500 font-medium mb-1">Inadimplentes</div>
-                    <div class="text-3xl font-black text-amber-600" x-text="totalInadimplentes"></div>
+                    <div class="text-2xl md:text-3xl font-black text-amber-600" x-text="totalInadimplentes"></div>
                     <div class="text-xs text-slate-400 mt-1">este mês</div>
                 </div>
-                <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm border-t-4 border-t-green-500">
+                <div class="bg-white rounded-2xl p-4 md:p-5 border border-slate-200 shadow-sm border-t-4 border-t-green-500">
                     <div class="text-xs text-slate-500 font-medium mb-1">Saldo Geral</div>
-                    <div class="text-2xl font-black text-green-600" x-text="fmt(totalSaldo)"></div>
+                    <div class="text-lg md:text-2xl font-black text-green-600" x-text="fmt(totalSaldo)"></div>
                     <div class="text-xs text-slate-400 mt-1">consolidado</div>
                 </div>
             </div>
 
-            <div class="grid lg:grid-cols-3 gap-6">
+            <div class="grid lg:grid-cols-3 gap-5 md:gap-6">
                 <!-- Condomínios resumo -->
                 <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                    <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100">
+                    <div class="flex items-center justify-between px-4 sm:px-5 py-4 border-b border-slate-100">
                         <h3 class="font-semibold text-slate-800">Condomínios</h3>
                         <button @click="section='condominios'" class="text-xs text-brand-600 hover:text-brand-700 font-medium">Ver todos →</button>
                     </div>
                     <div class="divide-y divide-slate-50">
                         <template x-for="c in condos">
-                            <div class="flex items-center justify-between px-5 py-3.5">
-                                <div class="flex items-center gap-3">
+                            <div class="flex items-center justify-between px-4 sm:px-5 py-3.5">
+                                <div class="flex items-center gap-3 min-w-0">
                                     <div class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center shrink-0">
                                         <i class="fa-solid fa-building text-slate-500 text-sm"></i>
                                     </div>
-                                    <div>
-                                        <div class="text-sm font-semibold text-slate-800" x-text="c.nome"></div>
-                                        <div class="text-xs text-slate-400" x-text="`Síndico: ${c.sindico}`"></div>
+                                    <div class="min-w-0">
+                                        <div class="text-sm font-semibold text-slate-800 truncate" x-text="c.nome"></div>
+                                        <div class="text-xs text-slate-400 truncate" x-text="`Síndico: ${c.sindico}`"></div>
                                     </div>
                                 </div>
-                                <div class="flex items-center gap-4 text-right">
-                                    <div class="hidden sm:block">
+                                <div class="flex items-center gap-3 shrink-0 ml-3">
+                                    <div class="hidden sm:block text-right">
                                         <div class="text-xs text-slate-400">Saldo</div>
                                         <div class="text-sm font-bold text-slate-700" x-text="fmt(c.saldo)"></div>
                                     </div>
-                                    <span class="text-xs font-semibold px-2.5 py-1 rounded-full"
+                                    <span class="text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap"
                                           :class="c.status === 'ok' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'"
                                           x-text="c.status === 'ok' ? 'Regular' : 'Atenção'"></span>
                                 </div>
@@ -187,11 +207,11 @@
 
                 <!-- Alertas -->
                 <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                    <div class="px-5 py-4 border-b border-slate-100">
+                    <div class="px-4 sm:px-5 py-4 border-b border-slate-100">
                         <h3 class="font-semibold text-slate-800">Alertas</h3>
                     </div>
                     <div class="divide-y divide-slate-50">
-                        <div class="px-5 py-3.5 flex items-start gap-3">
+                        <div class="px-4 sm:px-5 py-3.5 flex items-start gap-3">
                             <div class="w-7 h-7 rounded-lg bg-red-100 flex items-center justify-center shrink-0 mt-0.5">
                                 <i class="fa-solid fa-triangle-exclamation text-red-500 text-xs"></i>
                             </div>
@@ -200,7 +220,7 @@
                                 <div class="text-xs text-slate-400">Central Park — ação necessária</div>
                             </div>
                         </div>
-                        <div class="px-5 py-3.5 flex items-start gap-3">
+                        <div class="px-4 sm:px-5 py-3.5 flex items-start gap-3">
                             <div class="w-7 h-7 rounded-lg bg-amber-100 flex items-center justify-center shrink-0 mt-0.5">
                                 <i class="fa-solid fa-file-circle-exclamation text-amber-500 text-xs"></i>
                             </div>
@@ -209,7 +229,7 @@
                                 <div class="text-xs text-slate-400">Residencial das Flores — 12 dias</div>
                             </div>
                         </div>
-                        <div class="px-5 py-3.5 flex items-start gap-3">
+                        <div class="px-4 sm:px-5 py-3.5 flex items-start gap-3">
                             <div class="w-7 h-7 rounded-lg bg-blue-100 flex items-center justify-center shrink-0 mt-0.5">
                                 <i class="fa-solid fa-calendar text-blue-500 text-xs"></i>
                             </div>
@@ -218,7 +238,7 @@
                                 <div class="text-xs text-slate-400">Villa Verde — Ordinária 2026</div>
                             </div>
                         </div>
-                        <div class="px-5 py-3.5 flex items-start gap-3">
+                        <div class="px-4 sm:px-5 py-3.5 flex items-start gap-3">
                             <div class="w-7 h-7 rounded-lg bg-green-100 flex items-center justify-center shrink-0 mt-0.5">
                                 <i class="fa-solid fa-circle-check text-green-500 text-xs"></i>
                             </div>
@@ -234,52 +254,52 @@
 
         <!-- ===== CONDOMÍNIOS ===== -->
         <div x-show="section === 'condominios'" class="space-y-4">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div class="relative">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                    <input type="text" placeholder="Buscar condomínio..." class="pl-9 pr-4 py-2 text-sm border border-slate-200 rounded-xl bg-white focus:ring-2 focus:ring-brand-500 focus:border-transparent w-64">
+                    <input type="text" placeholder="Buscar condomínio..." class="pl-9 pr-4 py-2 text-sm border border-slate-200 rounded-xl bg-white focus:ring-2 focus:ring-brand-500 focus:border-transparent w-full sm:w-64">
                 </div>
-                <button class="flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold px-4 py-2 rounded-xl transition-all">
+                <button class="flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold px-4 py-2 rounded-xl transition-all">
                     <i class="fa-solid fa-plus"></i> Novo Condomínio
                 </button>
             </div>
 
             <div class="grid md:grid-cols-2 gap-4">
                 <template x-for="(c, i) in condos">
-                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 hover:shadow-md transition-shadow cursor-pointer">
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 hover:shadow-md transition-shadow cursor-pointer">
                         <div class="flex items-start justify-between mb-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-brand-50 border border-brand-100 flex items-center justify-center">
+                            <div class="flex items-center gap-3 min-w-0">
+                                <div class="w-10 h-10 rounded-xl bg-brand-50 border border-brand-100 flex items-center justify-center shrink-0">
                                     <i class="fa-solid fa-building text-brand-600"></i>
                                 </div>
-                                <div>
-                                    <div class="font-bold text-slate-800 text-sm" x-text="c.nome"></div>
-                                    <div class="text-xs text-slate-400" x-text="`Síndico: ${c.sindico}`"></div>
+                                <div class="min-w-0">
+                                    <div class="font-bold text-slate-800 text-sm truncate" x-text="c.nome"></div>
+                                    <div class="text-xs text-slate-400 truncate" x-text="`Síndico: ${c.sindico}`"></div>
                                 </div>
                             </div>
-                            <span class="text-xs font-semibold px-2.5 py-1 rounded-full"
+                            <span class="text-xs font-semibold px-2.5 py-1 rounded-full shrink-0 ml-2"
                                   :class="c.status === 'ok' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'"
                                   x-text="c.status === 'ok' ? 'Regular' : 'Atenção'"></span>
                         </div>
-                        <div class="grid grid-cols-3 gap-3">
-                            <div class="bg-slate-50 rounded-xl p-3 text-center">
+                        <div class="grid grid-cols-3 gap-2 sm:gap-3">
+                            <div class="bg-slate-50 rounded-xl p-2.5 sm:p-3 text-center">
                                 <div class="text-lg font-black text-slate-800" x-text="c.unidades"></div>
                                 <div class="text-[10px] text-slate-400">Unidades</div>
                             </div>
-                            <div class="bg-slate-50 rounded-xl p-3 text-center">
+                            <div class="bg-slate-50 rounded-xl p-2.5 sm:p-3 text-center">
                                 <div class="text-lg font-black" :class="c.inadimplentes > 4 ? 'text-amber-600' : 'text-slate-800'" x-text="c.inadimplentes"></div>
                                 <div class="text-[10px] text-slate-400">Inadimp.</div>
                             </div>
-                            <div class="bg-slate-50 rounded-xl p-3 text-center">
-                                <div class="text-sm font-black text-green-600" x-text="fmt(c.saldo)"></div>
+                            <div class="bg-slate-50 rounded-xl p-2.5 sm:p-3 text-center">
+                                <div class="text-xs sm:text-sm font-black text-green-600" x-text="fmt(c.saldo)"></div>
                                 <div class="text-[10px] text-slate-400">Saldo</div>
                             </div>
                         </div>
-                        <div class="flex gap-2 mt-4">
-                            <button @click="condoAtivo = i; section = 'documentos'" class="flex-1 text-xs font-medium py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors">
+                        <div class="flex gap-2 mt-3 sm:mt-4">
+                            <button @click="condoAtivo = i; section = 'documentos'" class="flex-1 text-xs font-medium py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors">
                                 <i class="fa-solid fa-folder mr-1"></i> Documentos
                             </button>
-                            <button @click="section = 'financeiro'" class="flex-1 text-xs font-medium py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors">
+                            <button @click="section = 'financeiro'" class="flex-1 text-xs font-medium py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors">
                                 <i class="fa-solid fa-chart-pie mr-1"></i> Financeiro
                             </button>
                         </div>
@@ -289,20 +309,20 @@
         </div>
 
         <!-- ===== DOCUMENTOS ===== -->
-        <div x-show="section === 'documentos'" class="space-y-5">
+        <div x-show="section === 'documentos'" class="space-y-4 sm:space-y-5">
             <!-- Seletor de condomínio -->
             <div class="flex gap-2 flex-wrap">
                 <template x-for="(c, i) in condos">
                     <button @click="condoAtivo = i; pastaAtiva = null"
-                            class="text-xs font-semibold px-4 py-2 rounded-xl border transition-all"
+                            class="text-xs font-semibold px-3 sm:px-4 py-2 rounded-xl border transition-all"
                             :class="condoAtivo === i ? 'bg-brand-600 text-white border-brand-600' : 'bg-white text-slate-600 border-slate-200 hover:border-brand-300'">
-                        <i class="fa-solid fa-building mr-1.5"></i><span x-text="c.nome"></span>
+                        <i class="fa-solid fa-building mr-1"></i><span x-text="c.nome"></span>
                     </button>
                 </template>
             </div>
 
             <!-- Upload -->
-            <div class="bg-white rounded-2xl border border-dashed border-slate-300 p-6 text-center hover:border-brand-400 transition-colors cursor-pointer">
+            <div class="bg-white rounded-2xl border border-dashed border-slate-300 p-5 sm:p-6 text-center hover:border-brand-400 transition-colors cursor-pointer">
                 <i class="fa-solid fa-cloud-arrow-up text-2xl text-slate-300 mb-2"></i>
                 <p class="text-sm text-slate-500">Arraste arquivos aqui ou <span class="text-brand-600 font-medium">clique para selecionar</span></p>
                 <p class="text-xs text-slate-400 mt-1">PDF, DOC, XLS, JPG — até 50MB</p>
@@ -311,14 +331,14 @@
             <!-- Pastas -->
             <div>
                 <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-3">Pastas</h3>
-                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                <div class="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
                     <template x-for="(p, i) in pastas">
                         <button @click="pastaAtiva = pastaAtiva === i ? null : i"
-                                class="bg-white rounded-2xl border p-4 text-center hover:shadow-md transition-all group"
+                                class="bg-white rounded-2xl border p-3 sm:p-4 text-center hover:shadow-md transition-all"
                                 :class="pastaAtiva === i ? 'border-brand-400 shadow-md' : 'border-slate-200'">
-                            <i :class="`fa-solid ${p.icon} text-2xl mb-2 ${p.cor}`"></i>
-                            <div class="text-xs font-semibold text-slate-700 leading-tight" x-text="p.nome"></div>
-                            <div class="text-[10px] text-slate-400 mt-1" x-text="`${p.qtd} arquivos`"></div>
+                            <i :class="`fa-solid ${p.icon} text-xl sm:text-2xl mb-1.5 sm:mb-2 ${p.cor}`"></i>
+                            <div class="text-[10px] sm:text-xs font-semibold text-slate-700 leading-tight" x-text="p.nome"></div>
+                            <div class="text-[9px] sm:text-[10px] text-slate-400 mt-1" x-text="`${p.qtd} arq.`"></div>
                         </button>
                     </template>
                 </div>
@@ -326,13 +346,13 @@
 
             <!-- Arquivos da pasta selecionada -->
             <div x-show="pastaAtiva !== null" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                <div class="flex items-center justify-between px-5 py-3.5 border-b border-slate-100">
-                    <h3 class="font-semibold text-slate-800 text-sm flex items-center gap-2">
-                        <i class="fa-solid fa-folder-open text-brand-500"></i>
-                        <span x-text="pastaAtiva !== null ? pastas[pastaAtiva].nome : ''"></span>
-                        <span class="text-xs text-slate-400 font-normal" x-text="pastaAtiva !== null ? `· ${pastas[pastaAtiva].qtd} arquivos` : ''"></span>
+                <div class="flex items-center justify-between px-4 sm:px-5 py-3.5 border-b border-slate-100">
+                    <h3 class="font-semibold text-slate-800 text-sm flex items-center gap-2 min-w-0">
+                        <i class="fa-solid fa-folder-open text-brand-500 shrink-0"></i>
+                        <span class="truncate" x-text="pastaAtiva !== null ? pastas[pastaAtiva].nome : ''"></span>
+                        <span class="text-xs text-slate-400 font-normal shrink-0" x-text="pastaAtiva !== null ? `· ${pastas[pastaAtiva].qtd} arq.` : ''"></span>
                     </h3>
-                    <button class="text-xs bg-brand-600 hover:bg-brand-700 text-white px-3 py-1.5 rounded-lg font-medium transition-colors">
+                    <button class="text-xs bg-brand-600 hover:bg-brand-700 text-white px-3 py-1.5 rounded-lg font-medium transition-colors shrink-0 ml-2">
                         <i class="fa-solid fa-plus mr-1"></i> Upload
                     </button>
                 </div>
@@ -343,19 +363,19 @@
                         { nome: 'Convocação Assembleia Mar 2026.pdf',    data: '01/03/2026', tam: '82 KB'  },
                         { nome: 'Ata Assembleia Ordinária 2025.pdf',     data: '15/03/2025', tam: '251 KB' }
                     ]">
-                        <div class="file-row flex items-center justify-between px-5 py-3 cursor-pointer transition-colors">
-                            <div class="flex items-center gap-3">
+                        <div class="file-row flex items-center justify-between px-4 sm:px-5 py-3 cursor-pointer transition-colors">
+                            <div class="flex items-center gap-3 min-w-0">
                                 <i class="fa-solid fa-file-pdf text-red-400 text-lg shrink-0"></i>
-                                <div>
-                                    <div class="text-sm text-slate-800 font-medium" x-text="f.nome"></div>
+                                <div class="min-w-0">
+                                    <div class="text-sm text-slate-800 font-medium truncate" x-text="f.nome"></div>
                                     <div class="text-xs text-slate-400" x-text="`${f.data} · ${f.tam}`"></div>
                                 </div>
                             </div>
-                            <div class="flex gap-2 shrink-0">
-                                <button class="text-slate-400 hover:text-brand-600 transition-colors text-sm px-2 py-1">
+                            <div class="flex gap-1 shrink-0 ml-2">
+                                <button class="text-slate-400 hover:text-brand-600 transition-colors text-sm p-2">
                                     <i class="fa-solid fa-download"></i>
                                 </button>
-                                <button class="text-slate-400 hover:text-red-500 transition-colors text-sm px-2 py-1">
+                                <button class="text-slate-400 hover:text-red-500 transition-colors text-sm p-2">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>
@@ -366,9 +386,9 @@
         </div>
 
         <!-- ===== FINANCEIRO ===== -->
-        <div x-show="section === 'financeiro'" class="space-y-5">
-            <div class="flex flex-wrap items-center gap-3">
-                <select class="text-sm border border-slate-200 rounded-xl px-3 py-2 bg-white focus:ring-2 focus:ring-brand-500">
+        <div x-show="section === 'financeiro'" class="space-y-4 sm:space-y-5">
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                <select class="text-sm border border-slate-200 rounded-xl px-3 py-2 bg-white focus:ring-2 focus:ring-brand-500 flex-1 sm:flex-none min-w-0">
                     <option>Residencial das Flores</option>
                     <option>Edifício Central Park</option>
                     <option>Villa Verde</option>
@@ -379,43 +399,49 @@
                     <option>Maio / 2026</option>
                     <option>Abril / 2026</option>
                 </select>
-                <button class="text-sm bg-white border border-slate-200 hover:border-brand-400 px-4 py-2 rounded-xl text-slate-600 font-medium transition-colors">
+                <button class="text-sm bg-white border border-slate-200 hover:border-brand-400 px-4 py-2 rounded-xl text-slate-600 font-medium transition-colors w-full sm:w-auto">
                     <i class="fa-solid fa-download mr-1.5"></i> Exportar PDF
                 </button>
             </div>
 
             <!-- Cards financeiros -->
-            <div class="grid grid-cols-3 gap-4">
-                <div class="bg-white rounded-2xl border border-slate-200 p-5 text-center shadow-sm">
-                    <div class="text-xs text-slate-500 mb-1">Receitas</div>
-                    <div class="text-2xl font-black text-green-600">R$ 27.200</div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm">
+                    <div class="flex sm:block items-center justify-between">
+                        <div class="text-xs text-slate-500 mb-0 sm:mb-1">Receitas</div>
+                        <div class="text-xl sm:text-2xl font-black text-green-600">R$ 27.200</div>
+                    </div>
                     <div class="text-xs text-green-500 mt-1">↑ 3% vs mês anterior</div>
                 </div>
-                <div class="bg-white rounded-2xl border border-slate-200 p-5 text-center shadow-sm">
-                    <div class="text-xs text-slate-500 mb-1">Despesas</div>
-                    <div class="text-2xl font-black text-red-500">R$ 8.780</div>
+                <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm">
+                    <div class="flex sm:block items-center justify-between">
+                        <div class="text-xs text-slate-500 mb-0 sm:mb-1">Despesas</div>
+                        <div class="text-xl sm:text-2xl font-black text-red-500">R$ 8.780</div>
+                    </div>
                     <div class="text-xs text-slate-400 mt-1">↓ 7% vs mês anterior</div>
                 </div>
-                <div class="bg-white rounded-2xl border border-slate-200 p-5 text-center shadow-sm border-t-4 border-t-green-500">
-                    <div class="text-xs text-slate-500 mb-1">Saldo</div>
-                    <div class="text-2xl font-black text-slate-800">R$ 18.420</div>
+                <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm border-t-4 border-t-green-500">
+                    <div class="flex sm:block items-center justify-between">
+                        <div class="text-xs text-slate-500 mb-0 sm:mb-1">Saldo</div>
+                        <div class="text-xl sm:text-2xl font-black text-slate-800">R$ 18.420</div>
+                    </div>
                     <div class="text-xs text-slate-400 mt-1">Fundo reserva: R$ 6.200</div>
                 </div>
             </div>
 
             <!-- Tabela balancete -->
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                <div class="px-5 py-4 border-b border-slate-100">
+                <div class="px-4 sm:px-5 py-4 border-b border-slate-100">
                     <h3 class="font-semibold text-slate-800 text-sm">Balancete — Junho 2026</h3>
                 </div>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm">
+                    <table class="w-full text-sm min-w-[480px]">
                         <thead class="bg-slate-50 border-b border-slate-100">
                             <tr>
-                                <th class="text-left px-5 py-3 text-xs font-semibold text-slate-500">Descrição</th>
-                                <th class="text-left px-5 py-3 text-xs font-semibold text-slate-500">Categoria</th>
-                                <th class="text-left px-5 py-3 text-xs font-semibold text-slate-500">Data</th>
-                                <th class="text-right px-5 py-3 text-xs font-semibold text-slate-500">Valor</th>
+                                <th class="text-left px-4 sm:px-5 py-3 text-xs font-semibold text-slate-500">Descrição</th>
+                                <th class="text-left px-4 sm:px-5 py-3 text-xs font-semibold text-slate-500">Categoria</th>
+                                <th class="text-left px-4 sm:px-5 py-3 text-xs font-semibold text-slate-500">Data</th>
+                                <th class="text-right px-4 sm:px-5 py-3 text-xs font-semibold text-slate-500">Valor</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-50">
@@ -428,14 +454,14 @@
                                 { desc:'Fundo de reserva',               cat:'Reserva', data:'30/06/2026', val:-2400, rec: false }
                             ]">
                                 <tr class="hover:bg-slate-50 transition-colors">
-                                    <td class="px-5 py-3 text-slate-800 font-medium" x-text="t.desc"></td>
-                                    <td class="px-5 py-3">
+                                    <td class="px-4 sm:px-5 py-3 text-slate-800 font-medium" x-text="t.desc"></td>
+                                    <td class="px-4 sm:px-5 py-3">
                                         <span class="text-xs px-2 py-0.5 rounded-full font-medium"
                                               :class="t.rec ? 'bg-green-100 text-green-700' : t.cat === 'Reserva' ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-600'"
                                               x-text="t.cat"></span>
                                     </td>
-                                    <td class="px-5 py-3 text-slate-500" x-text="t.data"></td>
-                                    <td class="px-5 py-3 text-right font-bold"
+                                    <td class="px-4 sm:px-5 py-3 text-slate-500 whitespace-nowrap" x-text="t.data"></td>
+                                    <td class="px-4 sm:px-5 py-3 text-right font-bold whitespace-nowrap"
                                         :class="t.val > 0 ? 'text-green-600' : 'text-red-500'"
                                         x-text="new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(t.val)"></td>
                                 </tr>
@@ -447,14 +473,14 @@
         </div>
 
         <!-- ===== INADIMPLÊNCIA ===== -->
-        <div x-show="section === 'inadimplencia'" class="space-y-5">
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div x-show="section === 'inadimplencia'" class="space-y-4 sm:space-y-5">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
                 <div class="bg-white rounded-2xl border border-slate-200 p-4 text-center shadow-sm">
                     <div class="text-2xl font-black text-amber-600">12</div>
                     <div class="text-xs text-slate-500">Inadimplentes</div>
                 </div>
                 <div class="bg-white rounded-2xl border border-slate-200 p-4 text-center shadow-sm">
-                    <div class="text-2xl font-black text-red-500">R$ 9.840</div>
+                    <div class="text-xl sm:text-2xl font-black text-red-500">R$ 9.840</div>
                     <div class="text-xs text-slate-500">Em aberto</div>
                 </div>
                 <div class="bg-white rounded-2xl border border-slate-200 p-4 text-center shadow-sm">
@@ -462,28 +488,28 @@
                     <div class="text-xs text-slate-500">Acima de 60 dias</div>
                 </div>
                 <div class="bg-white rounded-2xl border border-slate-200 p-4 text-center shadow-sm">
-                    <div class="text-2xl font-black text-green-600">R$ 1.650</div>
+                    <div class="text-xl sm:text-2xl font-black text-green-600">R$ 1.650</div>
                     <div class="text-xs text-slate-500">Acordos este mês</div>
                 </div>
             </div>
 
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+                <div class="px-4 sm:px-5 py-4 border-b border-slate-100 flex items-center justify-between">
                     <h3 class="font-semibold text-slate-800 text-sm">Devedores</h3>
                     <button class="text-xs bg-brand-600 text-white px-3 py-1.5 rounded-lg font-medium">
                         <i class="fa-solid fa-envelope mr-1"></i> Notificar todos
                     </button>
                 </div>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm">
+                    <table class="w-full text-sm min-w-[560px]">
                         <thead class="bg-slate-50 border-b border-slate-100">
                             <tr>
-                                <th class="text-left px-5 py-3 text-xs font-semibold text-slate-500">Morador</th>
-                                <th class="text-left px-5 py-3 text-xs font-semibold text-slate-500">Condomínio</th>
-                                <th class="text-left px-5 py-3 text-xs font-semibold text-slate-500">Unidade</th>
-                                <th class="text-left px-5 py-3 text-xs font-semibold text-slate-500">Atraso</th>
-                                <th class="text-right px-5 py-3 text-xs font-semibold text-slate-500">Valor</th>
-                                <th class="px-5 py-3"></th>
+                                <th class="text-left px-4 sm:px-5 py-3 text-xs font-semibold text-slate-500">Morador</th>
+                                <th class="text-left px-4 sm:px-5 py-3 text-xs font-semibold text-slate-500">Condomínio</th>
+                                <th class="text-left px-4 sm:px-5 py-3 text-xs font-semibold text-slate-500">Apto</th>
+                                <th class="text-left px-4 sm:px-5 py-3 text-xs font-semibold text-slate-500">Atraso</th>
+                                <th class="text-right px-4 sm:px-5 py-3 text-xs font-semibold text-slate-500">Valor</th>
+                                <th class="px-4 sm:px-5 py-3"></th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-50">
@@ -496,18 +522,18 @@
                                 { nome:'Adriana Santos',  condo:'Villa Verde',    apto:'105', dias:9,   val:680  }
                             ]">
                                 <tr class="hover:bg-slate-50 transition-colors">
-                                    <td class="px-5 py-3 font-medium text-slate-800" x-text="d.nome"></td>
-                                    <td class="px-5 py-3 text-slate-500 text-xs" x-text="d.condo"></td>
-                                    <td class="px-5 py-3 text-slate-500" x-text="d.apto"></td>
-                                    <td class="px-5 py-3">
-                                        <span class="text-xs font-semibold px-2 py-0.5 rounded-full"
+                                    <td class="px-4 sm:px-5 py-3 font-medium text-slate-800 whitespace-nowrap" x-text="d.nome"></td>
+                                    <td class="px-4 sm:px-5 py-3 text-slate-500 text-xs whitespace-nowrap" x-text="d.condo"></td>
+                                    <td class="px-4 sm:px-5 py-3 text-slate-500" x-text="d.apto"></td>
+                                    <td class="px-4 sm:px-5 py-3">
+                                        <span class="text-xs font-semibold px-2 py-0.5 rounded-full whitespace-nowrap"
                                               :class="d.dias > 60 ? 'bg-red-100 text-red-700' : d.dias > 30 ? 'bg-amber-100 text-amber-700' : 'bg-yellow-50 text-yellow-700'"
                                               x-text="`${d.dias} dias`"></span>
                                     </td>
-                                    <td class="px-5 py-3 text-right font-bold text-red-500"
+                                    <td class="px-4 sm:px-5 py-3 text-right font-bold text-red-500 whitespace-nowrap"
                                         x-text="new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(d.val)"></td>
-                                    <td class="px-5 py-3 text-right">
-                                        <button class="text-xs text-brand-600 hover:text-brand-700 font-medium">Notificar</button>
+                                    <td class="px-4 sm:px-5 py-3 text-right">
+                                        <button class="text-xs text-brand-600 hover:text-brand-700 font-medium whitespace-nowrap">Notificar</button>
                                     </td>
                                 </tr>
                             </template>
@@ -526,32 +552,34 @@
             </div>
             <div class="space-y-3">
                 <template x-for="a in [
-                    { titulo:'Assembleia Ordinária 2026',       condo:'Villa Verde',         data:'11/06/2026', status:'proxima', hora:'19h00' },
-                    { titulo:'Assembleia Extraordinária',       condo:'Central Park',        data:'20/06/2026', status:'proxima', hora:'18h30' },
-                    { titulo:'Assembleia Ordinária 2026',       condo:'Residencial das Flores', data:'12/03/2026', status:'realizada', hora:'19h00' },
-                    { titulo:'Assembleia Ordinária 2026',       condo:'Sol Nascente',        data:'08/03/2026', status:'realizada', hora:'18h00' }
+                    { titulo:'Assembleia Ordinária 2026',    condo:'Villa Verde',            data:'11/06/2026', status:'proxima',  hora:'19h00' },
+                    { titulo:'Assembleia Extraordinária',    condo:'Central Park',           data:'20/06/2026', status:'proxima',  hora:'18h30' },
+                    { titulo:'Assembleia Ordinária 2026',    condo:'Residencial das Flores', data:'12/03/2026', status:'realizada',hora:'19h00' },
+                    { titulo:'Assembleia Ordinária 2026',    condo:'Sol Nascente',           data:'08/03/2026', status:'realizada',hora:'18h00' }
                 ]">
-                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                                 :class="a.status === 'proxima' ? 'bg-brand-50 text-brand-600' : 'bg-slate-100 text-slate-400'">
-                                <i class="fa-solid fa-users"></i>
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                                     :class="a.status === 'proxima' ? 'bg-brand-50 text-brand-600' : 'bg-slate-100 text-slate-400'">
+                                    <i class="fa-solid fa-users"></i>
+                                </div>
+                                <div>
+                                    <div class="font-semibold text-slate-800 text-sm" x-text="a.titulo"></div>
+                                    <div class="text-xs text-slate-400 mt-0.5" x-text="`${a.condo} · ${a.data} às ${a.hora}`"></div>
+                                </div>
                             </div>
-                            <div>
-                                <div class="font-semibold text-slate-800 text-sm" x-text="a.titulo"></div>
-                                <div class="text-xs text-slate-400 mt-0.5" x-text="`${a.condo} · ${a.data} às ${a.hora}`"></div>
+                            <div class="flex items-center gap-2 sm:gap-3 ml-[52px] sm:ml-0">
+                                <span class="text-xs font-semibold px-3 py-1 rounded-full"
+                                      :class="a.status === 'proxima' ? 'bg-brand-50 text-brand-600' : 'bg-slate-100 text-slate-500'"
+                                      x-text="a.status === 'proxima' ? 'Agendada' : 'Realizada'"></span>
+                                <button x-show="a.status === 'proxima'" class="text-xs text-slate-500 hover:text-brand-600 font-medium transition-colors">
+                                    <i class="fa-solid fa-paper-plane mr-1"></i> Convocação
+                                </button>
+                                <button x-show="a.status === 'realizada'" class="text-xs text-slate-500 hover:text-brand-600 font-medium transition-colors">
+                                    <i class="fa-solid fa-file-pdf mr-1"></i> Ver ata
+                                </button>
                             </div>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <span class="text-xs font-semibold px-3 py-1 rounded-full"
-                                  :class="a.status === 'proxima' ? 'bg-brand-50 text-brand-600' : 'bg-slate-100 text-slate-500'"
-                                  x-text="a.status === 'proxima' ? 'Agendada' : 'Realizada'"></span>
-                            <button x-show="a.status === 'proxima'" class="text-xs text-slate-500 hover:text-brand-600 font-medium transition-colors">
-                                <i class="fa-solid fa-paper-plane mr-1"></i> Convocação
-                            </button>
-                            <button x-show="a.status === 'realizada'" class="text-xs text-slate-500 hover:text-brand-600 font-medium transition-colors">
-                                <i class="fa-solid fa-file-pdf mr-1"></i> Ver ata
-                            </button>
                         </div>
                     </div>
                 </template>
@@ -560,7 +588,7 @@
 
         <!-- ===== COMUNICADOS ===== -->
         <div x-show="section === 'comunicados'" class="space-y-4">
-            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-6">
                 <h3 class="font-semibold text-slate-800 mb-4 text-sm">Novo Comunicado</h3>
                 <div class="space-y-3">
                     <div>
@@ -581,11 +609,11 @@
                         <label class="text-xs font-medium text-slate-500 block mb-1">Mensagem</label>
                         <textarea rows="4" placeholder="Digite o comunicado..." class="w-full text-sm border border-slate-200 rounded-xl px-3 py-2 focus:ring-2 focus:ring-brand-500 resize-none"></textarea>
                     </div>
-                    <div class="flex gap-2 pt-1">
-                        <button class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-4 py-2 rounded-xl transition-all">
+                    <div class="flex flex-col sm:flex-row gap-2 pt-1">
+                        <button class="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-all">
                             <i class="fa-brands fa-whatsapp"></i> Enviar WhatsApp
                         </button>
-                        <button class="flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold px-4 py-2 rounded-xl transition-all">
+                        <button class="flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-all">
                             <i class="fa-solid fa-envelope"></i> Enviar E-mail
                         </button>
                     </div>
@@ -593,21 +621,21 @@
             </div>
 
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                <div class="px-5 py-4 border-b border-slate-100">
+                <div class="px-4 sm:px-5 py-4 border-b border-slate-100">
                     <h3 class="font-semibold text-slate-800 text-sm">Histórico de Comunicados</h3>
                 </div>
                 <div class="divide-y divide-slate-50">
                     <template x-for="c in [
-                        { assunto:'Balancete Maio/2026 disponível', data:'01/06/2026', dest:'Todos',      canal:'email' },
-                        { assunto:'Manutenção elevador — Flores',   data:'28/05/2026', dest:'Das Flores', canal:'whatsapp' },
-                        { assunto:'Convocação Assembleia Villa Verde', data:'01/06/2026', dest:'Villa Verde', canal:'email' }
+                        { assunto:'Balancete Maio/2026 disponível',    data:'01/06/2026', dest:'Todos',       canal:'email'     },
+                        { assunto:'Manutenção elevador — Flores',      data:'28/05/2026', dest:'Das Flores',  canal:'whatsapp'  },
+                        { assunto:'Convocação Assembleia Villa Verde',  data:'01/06/2026', dest:'Villa Verde', canal:'email'     }
                     ]">
-                        <div class="flex items-center justify-between px-5 py-3.5">
-                            <div>
-                                <div class="text-sm font-medium text-slate-800" x-text="c.assunto"></div>
+                        <div class="flex items-center justify-between px-4 sm:px-5 py-3.5 gap-3">
+                            <div class="min-w-0">
+                                <div class="text-sm font-medium text-slate-800 truncate" x-text="c.assunto"></div>
                                 <div class="text-xs text-slate-400 mt-0.5" x-text="`${c.data} · ${c.dest}`"></div>
                             </div>
-                            <span class="text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1"
+                            <span class="text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1 shrink-0"
                                   :class="c.canal === 'email' ? 'bg-blue-50 text-blue-600' : 'bg-green-50 text-green-700'">
                                 <i :class="c.canal === 'email' ? 'fa-solid fa-envelope' : 'fa-brands fa-whatsapp'"></i>
                                 <span x-text="c.canal"></span>
