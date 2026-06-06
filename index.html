@@ -1217,28 +1217,46 @@
         </div>
     </footer>
 
-    <!-- Banner LGPD -->
+    <!-- LGPD Cookie Popup -->
+    <style>
+        @keyframes lgpd-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(254,0,50,0.45), 0 20px 60px rgba(0,0,0,0.35); }
+            50%       { box-shadow: 0 0 0 14px rgba(254,0,50,0), 0 20px 60px rgba(0,0,0,0.35); }
+        }
+        .lgpd-card { animation: lgpd-pulse 2s ease-in-out infinite; }
+    </style>
+
     <div x-data="{ show: !localStorage.getItem('lgpd_aceito') }"
          x-show="show"
          x-transition:enter="transition ease-out duration-500"
-         x-transition:enter-start="opacity-0 translate-y-4"
-         x-transition:enter-end="opacity-100 translate-y-0"
+         x-transition:enter-start="opacity-0 scale-90"
+         x-transition:enter-end="opacity-100 scale-100"
          x-transition:leave="transition ease-in duration-300"
-         x-transition:leave-start="opacity-100 translate-y-0"
-         x-transition:leave-end="opacity-0 translate-y-4"
-         class="fixed bottom-0 left-0 right-0 z-50 bg-dark/95 backdrop-blur border-t border-accent-800 px-4 py-4 shadow-2xl"
-         style="display: none;">
-        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <div class="flex items-start gap-3 flex-1">
-                <i class="fa-solid fa-shield-halved text-brand-500 text-lg mt-0.5 shrink-0"></i>
-                <p class="text-xs text-slate-300 leading-relaxed">
-                    Este site utiliza cookies essenciais para garantir o funcionamento correto das páginas. Seus dados são tratados conforme a
-                    <strong class="text-slate-100">Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018)</strong>
-                    e não são compartilhados com terceiros sem seu consentimento.
-                </p>
+         x-transition:leave-start="opacity-100 scale-100"
+         x-transition:leave-end="opacity-0 scale-90"
+         class="fixed bottom-6 right-6 z-50 max-w-sm w-[calc(100vw-3rem)]"
+         style="display:none;">
+
+        <div class="lgpd-card bg-dark rounded-2xl border border-accent-800 p-5 relative overflow-hidden">
+            <!-- Faixa decorativa topo -->
+            <div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-brand-600 via-brand-400 to-brand-600"></div>
+
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-9 h-9 rounded-xl bg-brand-600/20 border border-brand-600/30 flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-shield-halved text-brand-500 text-sm"></i>
+                </div>
+                <div>
+                    <p class="text-white text-sm font-semibold leading-tight">Privacidade & Cookies</p>
+                    <p class="text-slate-500 text-[10px]">LGPD — Lei nº 13.709/2018</p>
+                </div>
             </div>
+
+            <p class="text-slate-400 text-xs leading-relaxed mb-4">
+                Usamos cookies essenciais para o funcionamento do site. Seus dados estão protegidos e <strong class="text-slate-300">não são compartilhados com terceiros</strong>.
+            </p>
+
             <button @click="localStorage.setItem('lgpd_aceito', '1'); show = false"
-                    class="shrink-0 bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold px-5 py-2.5 rounded-xl transition-all whitespace-nowrap">
+                    class="w-full bg-brand-600 hover:bg-brand-700 active:scale-95 text-white text-sm font-semibold py-2.5 rounded-xl transition-all">
                 Entendi e aceito
             </button>
         </div>
